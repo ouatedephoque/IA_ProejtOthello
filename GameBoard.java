@@ -1,4 +1,4 @@
-package Participants.AssunDista;
+package Participants.AssuncaoDiStasio;
 
 import java.util.ArrayList;
 
