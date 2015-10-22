@@ -20,44 +20,18 @@ public class Joueur extends Othello.Joueur {
 	public Move nextPlay(Move move) {
 
 		// Add enemy coin to the gameboard
-		gameBoard.addCoin(move, enemyID);
+		if(move != null)
+		{
+			gameBoard.addCoin(move, enemyID);
+		}
 
 		// Get the best move (null if no move possible)
-		Node bestMove = null;// ab_max.getBestMove(gameBoard., depth, playerID);
+		Move bestMove = AI.getBestMove(gameBoard, depth, playerID);
 
 		// Add player coin to the gameboard
-		gameBoard.addCoin(bestMove.getMove(), playerID);
-		return bestMove.getMove();
-	}
+		gameBoard.addCoin(bestMove, playerID);
 
-	/*
-	 * public Node ab_max(Node root, int depth) { if (depth == 0 ||
-	 * root.isLeaf()) { return root; }
-	 * 
-	 * Float maxVal = Float.NEGATIVE_INFINITY; Move maxOp = null; GameBoard tmp;
-	 * 
-	 * for (Node node : root.getChildNodeList()) { tmp = gameBoard.clone();
-	 * gameBoard.setCoin(node.getMove(), playerID); gameBoard = tmp;
-	 * 
-	 * Node score = ab_min(node, depth - 1);
-	 * 
-	 * if (score.getEvaluation() > maxVal) { maxVal = (float)
-	 * score.getEvaluation(); maxOp = score.getMove(); } }
-	 * 
-	 * return maxOp; }
-	 * 
-	 * public Node ab_min(Node root, int depth) { if (depth == 0 ||
-	 * root.isLeaf()) { return root; }
-	 * 
-	 * Float maxVal = Float.POSITIVE_INFINITY; Move maxOp = null; GameBoard tmp;
-	 * 
-	 * for (Node node : root.getChildNodeList()) { tmp = gameBoard.clone();
-	 * gameBoard.setCoin(node.getMove(), playerID); gameBoard = tmp;
-	 * 
-	 * Node score = ab_max(node, depth - 1);
-	 * 
-	 * if (score.getEvaluation() < maxVal) { maxVal = (float)
-	 * score.getEvaluation(); maxOp = score.getMove(); } } return maxOp; }
-	 */
+		return bestMove;
+	}
 
 }
