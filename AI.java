@@ -46,7 +46,7 @@ public class AI {
 
 		for(Node n : root.getChildNodeList())
 		{
-			
+			double value2 = 
 		}
 		
 		return 0.0;
