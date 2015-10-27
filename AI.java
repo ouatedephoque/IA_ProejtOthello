@@ -119,11 +119,14 @@ public class AI {
 	private int getEvaluationMove(GameBoard game) {
 		int result = 0;
 
-		int force = getForceBoard(game);
-		int mobility = game.getPossibleMoves(playerID).size();
-		int nbPionTotal = game.getCoinCount(playerID)
+		int force = getForceBoard(game);							// Force de nos pion
+		int mobility = game.getPossibleMoves(playerID).size();		// Nombre de mouvements possibles
+		int nbPionTotal = game.getCoinCount(playerID)				// Nombre de pions totaux
 				+ game.getCoinCount(ennemyID);
 
+		// Négatif : l'adversaire à plus de pion
+		// Positif : nous avons plus de pion
+		// Sinon : matériel = 0
 		int materiel = 0;
 		if (game.getCoinCount(playerID) > game.getCoinCount(ennemyID)) {
 			materiel = 1;
@@ -134,14 +137,14 @@ public class AI {
 		// Ouverture (-30 pions)
 		if (nbPionTotal < 30) {
 			// Mobilité et position favorisées.
-			if(iBegin == 0)
+			if(iBegin == 0)	// Si commence
 				result = 50 * mobility + force + 2 * materiel;
 			else
 				result = 30 * mobility + force + 10 * materiel;
 		}
 		// Fin (+ 45 pions)
 		else if (nbPionTotal > 45) {
-			if(iBegin == 0)
+			if(iBegin == 0)	// Si commence
 				result = force / 30 + materiel;
 			else
 				result = force / 20 + materiel;
@@ -149,7 +152,7 @@ public class AI {
 		}
 		// Milieu (entre 15 et 45 pions)
 		else {
-			if(iBegin == 0)
+			if(iBegin == 0)	// Si commence
 				result = 50 * mobility + force + 10 * materiel;
 			else
 				result = 30 * mobility + force + 4 * materiel;
@@ -171,29 +174,38 @@ public class AI {
 		return result;
 	}
 	
+	/**
+	 * Evolution du tableau d'évaluation si les coins sont occupés
+	 * @param game
+	 */
 	private void changeValueCoinCornerOccuped(GameBoard game)
 	{		
+		//Coin en haut à gauche
 		if(playerID == game.getPlayerIDAtPos(0, 0))
 		{
 			changEvaluationTab(0, 0);
 		}
-		
+
+		//Coin en haut à droite
 		if(playerID == game.getPlayerIDAtPos(0, GameBoard.BOARD_SIZE-1))
 		{
 			changEvaluationTab(0, GameBoard.BOARD_SIZE-1);
 		}
-		
+
+		//Coin en bas à gauche
 		if(playerID == game.getPlayerIDAtPos(GameBoard.BOARD_SIZE-1, 0))
 		{
 			changEvaluationTab(GameBoard.BOARD_SIZE-1, 0);
 		}
-		
+
+		//Coin en bas à droite
 		if(playerID == game.getPlayerIDAtPos(GameBoard.BOARD_SIZE-1, GameBoard.BOARD_SIZE-1))
 		{
 			changEvaluationTab(GameBoard.BOARD_SIZE-1, GameBoard.BOARD_SIZE-1);
 		}
 	}
 	
+	//Changer l'évaluation des cases avoisinant le coin occupé et sa ligne et colonne
 	private void changEvaluationTab(int x, int y)
 	{
 		int directionX = (x == GameBoard.BOARD_SIZE-1) ? -1 : 1;
@@ -203,6 +215,7 @@ public class AI {
 		evaluation[x][y+directionY] = 150;
 		evaluation[x+directionX][y+directionY] = 250;
 		
+		//Augmentation des points des lignes et des colonnes
 		for(int i = 0; i < GameBoard.BOARD_SIZE; i++)
 		{
 			evaluation[x][i] *= 3;
